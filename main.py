@@ -1,9 +1,20 @@
 from vosk import Model, KaldiRecognizer
+from ollama import chat
 import pyaudio
 import json
 
+# Define a system prompt
+system_prompt = "Get only key points, and try to use 2-3 sentences."
+# Chat with a system prompt
+response = chat('llama3.2:latest', 
+                messages=[
+                    {'role': 'system', 'content': system_prompt},
+                    {'role': 'user', 'content': 'How does cryptocurrency work?'}
+                ])
+print(response.message.content)
+
 # Load model
-model = Model(r"vosk-model-small-en-us-0.15")
+'''model = Model(r"vosk-model-small-en-us-0.15")
 recognizer = KaldiRecognizer(model, 16000)
 
 # Initialize mic
@@ -26,4 +37,4 @@ try:
 finally:
     stream.stop_stream()
     stream.close()
-    mic.terminate()
+    mic.terminate()'''
