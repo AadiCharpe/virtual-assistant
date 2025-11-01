@@ -1,10 +1,11 @@
 from vosk import Model, KaldiRecognizer
 from ollama import chat
 import pyaudio
+import pyttsx3
 import json
 
 # Define a system prompt
-system_prompt = "Get only key points, and try to use 2-3 sentences."
+system_prompt = "Get only key points, and try to use 1-2 sentences."
 
 # Load model
 model = Model(r"vosk-model-small-en-us-0.15")
@@ -15,6 +16,10 @@ mic = pyaudio.PyAudio()
 stream = mic.open(format=pyaudio.paInt16, channels=1, rate=16000,
                   input=True, input_device_index=1, frames_per_buffer=8192)
 stream.start_stream()
+
+# Initialize speaking
+engine = pyttsx3.init()
+engine.setProperty('rate', 175)
 
 print("Listening... (Press Ctrl+C to stop)")
 
@@ -36,7 +41,8 @@ try:
                                     {'role': 'system', 'content': system_prompt},
                                     {'role': 'user', 'content': prompt}
                                 ])
-                    print(response.message.content)
+                    engine.say(response.message.content)
+                    engine.runAndWait()
 finally:
     stream.stop_stream()
     stream.close()
