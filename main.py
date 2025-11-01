@@ -25,13 +25,19 @@ try:
             result = json.loads(recognizer.Result())
             text = result.get("text", "")
             if text:
-                # Chat with a system prompt
-                response = chat('llama3.2:latest', 
+                split = text.split()
+                prompt = ''
+                for word in split:
+                    if word == 'pineapple':
+                        prompt = ' '.join(split[split.index(word) + 1:])
+                '''response = chat('llama3.2:latest', 
                                 messages=[
                                     {'role': 'system', 'content': system_prompt},
-                                    {'role': 'user', 'content': text}
+                                    {'role': 'user', 'content': prompt}
                                 ])
-                print(response.message.content)
+                print(response.message.content)'''
+                if prompt:
+                    print(prompt)
 finally:
     stream.stop_stream()
     stream.close()
