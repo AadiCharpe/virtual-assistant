@@ -30,14 +30,13 @@ try:
                 for word in split:
                     if word == 'pineapple':
                         prompt = ' '.join(split[split.index(word) + 1:])
-                '''response = chat('llama3.2:latest', 
+                if prompt:
+                    response = chat('llama3.2:latest', 
                                 messages=[
                                     {'role': 'system', 'content': system_prompt},
                                     {'role': 'user', 'content': prompt}
                                 ])
-                print(response.message.content)'''
-                if prompt:
-                    print(prompt)
+                    print(response.message.content)
 finally:
     stream.stop_stream()
     stream.close()
